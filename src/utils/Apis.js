@@ -1,48 +1,53 @@
 import axios from "axios";
 
-
 const api = axios.create({
-    baseURL: "https://jwtapi1111.onrender.com/api",
-    withCredentials: true,  // using because we are using cookies
-})
+  baseURL: "https://jwtapi1111.onrender.com/api",
+  withCredentials: true, // refresh token in cookie
+});
 
 async function API(config) {
-    try {
-        const token = localStorage.getItem('token')
-        if (token) {
-            config.headers = {
-                ...config.headers,
-                Authorization: `Bearer ${token}`,
-            }
-        }
-        return await api(config)
-    } catch (error) {
-        if (error.response.status === 401) {
-            try {
-                // generating access token if our refresh token is valid
-                const data = await api.post('/auth/refresh-token')  // calling the refresh token api
-                localStorage.setItem('token', data.accessToken)
-                config.headers = {
-                    ...config.headers,
-                    Authorization: `Bearer ${data.accessToken}`,
-                }
-                return await api(config)
-            } catch (refreshError) {
-                // if refresh token is not valid, redirect to login page
-                // window.location.href = '/login'
-            }
-        }
+  try {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+      };
     }
+
+    const response = await api(config);
+    return response.data;
+
+  } catch (error) {
+    if (error.response?.status === 401 && !config._retry) {
+      config._retry = true;
+
+      try {
+        const refreshRes = await api.post("/auth/refresh-token");
+        const newToken = refreshRes.data.accessToken;
+
+        localStorage.setItem("token", newToken);
+        config.headers.Authorization = `Bearer ${newToken}`;
+
+        return await api(config);
+      } catch {
+        localStorage.clear();
+        window.location.href = "/login";
+      }
+    }
+
+    throw error;
+  }
 }
 
 export const logout = async () => {
-    try {
-        await api.post('/auth/logout')     // calling the logout api
-        localStorage.removeItem('token')
-        window.location.href = '/login'
-    } catch (error) {
-        
-    }
-}
+  try {
+    await api.post("/auth/logout");
+  } catch {}
 
-export {API}
+  localStorage.clear();
+  window.location.href = "/login";
+};
+
+export { API };

@@ -1,11 +1,10 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './views/Home'
-import LoginForm from './views/Login'
-import SignUp from './views/SignUp'
-import Dashboard from './views/Dashboard'
-import { UserContext } from './contextApi/AuthContext'
-
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./views/Home";
+import Login from "./views/Login";
+import SignUp from "./views/SignUp";
+import Dashboard from "./views/Dashboard";
+import { UserContext } from "./contextApi/AuthContext";
 
 function App() {
   return (
@@ -13,13 +12,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </UserContext>
-  )
+  );
 }
 
-export default App
+export default App;
