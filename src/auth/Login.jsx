@@ -48,12 +48,16 @@ const Login = () => {
       {/* LOGIN CONTENT AREA */}
       <div className="w-full md:w-[50%] flex items-center justify-center p-6 z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          // ANIMATION: Starts from left (-100px) and fades in
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ 
+            duration: 0.8, 
+            ease: "easeOut" 
+          }}
           className="w-full max-w-md overflow-hidden rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md shadow-2xl"
         >
-          {/* Logo Section - Transparent Background */}
+          {/* Logo Section */}
           <div className="p-6 flex justify-center border-b border-white/10">
             <img
               src="https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/logo-slogan.svg"
@@ -75,7 +79,6 @@ const Login = () => {
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-6">
-                  {/* Email */}
                   <div className="relative group">
                     <Field
                       name="email"
@@ -85,7 +88,6 @@ const Login = () => {
                     />
                   </div>
 
-                  {/* Password */}
                   <div className="relative group">
                     <Field
                       name="password"
@@ -102,7 +104,6 @@ const Login = () => {
                     </button>
                   </div>
 
-                  {/* Submit Button with Spinner */}
                   <div className="flex justify-end pt-4">
                     <button
                       type="submit"
@@ -126,7 +127,6 @@ const Login = () => {
               )}
             </Formik>
 
-            {/* Register Link */}
             <div className="mt-12 text-center border-t border-white/10 pt-6">
               <p className="text-sm text-white/50">
                 Don't have an account?{" "}
