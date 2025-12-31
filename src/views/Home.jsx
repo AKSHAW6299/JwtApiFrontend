@@ -1,11 +1,10 @@
 import React from 'react'
-import Headers from '../common_components/Headers'
-
+import Dashboard from './Dashboard'
 
 function Home() {
   return (
     <div>
-      <Headers />
+        <Dashboard />
     </div>
   )
 }
