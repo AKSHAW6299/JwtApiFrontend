@@ -14,9 +14,9 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
       <aside
         className={`
-          fixed md:static
-          top-14 md:top-0
-          h-[calc(100vh-56px)] md:h-auto
+          fixed md:sticky
+          top-14
+          h-[calc(100vh-56px)]
           w-64
           bg-gray-900 text-white
           z-50

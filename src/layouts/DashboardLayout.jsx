@@ -11,19 +11,24 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     if (!user) navigate("/login");
-  }, [user]);
+  }, [user, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    // 🔑 FULL VIEWPORT
+    <div className="h-screen flex flex-col">
+      {/* 🔒 STICKY NAVBAR */}
       <Navbar toggleSidebar={() => setSidebarOpen(true)} />
 
-      <div className="flex flex-1">
+      {/* 🔑 FLEX AREA (NO BODY SCROLL) */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* 🔒 STICKY SIDEBAR */}
         <Sidebar
           isOpen={sidebarOpen}
           closeSidebar={() => setSidebarOpen(false)}
         />
 
-        <main className="flex-1 p-4 md:p-6 bg-gray-100">
+        {/* ✅ ONLY CONTENT SCROLLS */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-100">
           <Outlet />
         </main>
       </div>

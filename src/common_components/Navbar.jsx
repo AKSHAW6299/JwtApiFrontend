@@ -6,7 +6,7 @@ const Navbar = ({ toggleSidebar }) => {
   const { user } = useContext(WebData);
 
   return (
-    <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-4">
+    <header className="sticky top-0 z-50 h-14 bg-gray-900 text-white flex items-center justify-between px-4">
       <div className="flex items-center gap-3">
         {/* MOBILE TOGGLE */}
         <button
