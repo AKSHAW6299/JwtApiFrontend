@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { API } from "../utils/Apis";
 import { WebData } from "../contextApi/AuthContext";
@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 const Login = () => {
   const { setUser } = useContext(WebData);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (values, { setSubmitting }) => {
     try {
@@ -30,31 +31,42 @@ const Login = () => {
   };
 
   return (
-    // Updated background to match the dark teal tone in the image
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#083b4a] overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#083b4a] overflow-hidden relative">
       
-      {/* Left Side: Login Form Area */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-6 lg:p-12 z-20">
+      {/* BACKGROUND IMAGE LAYER */}
+      <div 
+        className="absolute inset-0 z-0 hidden md:block"
+        style={{
+          backgroundImage: "url('https://accentra.co.uk/wp-content/uploads/2015/08/accentra-business-software-solutions1.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'right center',
+          clipPath: "polygon(30% 0, 100% 0, 100% 100%, 0% 100%)",
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#083b4a] via-[#083b4a]/60 to-transparent z-1" />
+
+      {/* LOGIN CONTENT AREA */}
+      <div className="w-full md:w-[50%] flex items-center justify-center p-6 z-10">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-md overflow-hidden rounded-xl shadow-2xl"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md overflow-hidden rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md shadow-2xl"
         >
-          {/* Form Header */}
-          <div className="bg-[#111d2b] p-5 flex justify-center border-b border-white/10">
+          {/* Logo Section - Fully Transparent */}
+          <div className="p-6 flex justify-center border-b border-white/10">
             <img
               src="https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/logo-slogan.svg"
               alt="Accentra Logo"
-              className="h-10 brightness-0 invert opacity-90" 
+              className="h-12 brightness-0 invert" 
             />
           </div>
 
-          {/* Form Body - Soft Gray matching UI */}
-          <div className="bg-[#d1d9e0] p-10">
+          {/* Form Section */}
+          <div className="p-8 md:p-10">
             <div className="mb-10">
-              <h2 className="text-3xl font-extrabold text-[#1a2b3c] tracking-tight">Welcome Back</h2>
-              <p className="text-[#5a6b7d] font-medium mt-1">Sign in to your dashboard</p>
+              <h2 className="text-3xl font-bold text-white tracking-tight">Welcome Back</h2>
+              <p className="text-white/70 font-medium mt-2">Sign in to your dashboard</p>
             </div>
 
             <Formik
@@ -63,25 +75,39 @@ const Login = () => {
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-6">
-                  <Field
-                    name="email"
-                    type="email"
-                    placeholder="Email .company.com"
-                    className="w-full px-4 py-3.5 rounded-lg border-none bg-white text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 shadow-inner"
-                  />
+                  {/* Email Field */}
+                  <div className="relative">
+                    <Field
+                      name="email"
+                      type="email"
+                      placeholder="Email .company.com"
+                      className="w-full px-4 py-3.5 rounded-lg border border-white/20 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
+                    />
+                  </div>
 
-                  <Field
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    className="w-full px-4 py-3.5 rounded-lg border-none bg-white text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 shadow-inner"
-                  />
+                  {/* Password Field */}
+                  <div className="relative">
+                    <Field
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      className="w-full px-4 py-3.5 rounded-lg border border-white/20 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-4 text-xs font-bold text-white/50 hover:text-white transition-colors"
+                    >
+                      {showPassword ? "HIDE" : "SHOW"}
+                    </button>
+                  </div>
 
-                  <div className="flex justify-end pt-2">
+                  {/* Sign In Button - Transparent Outline Style */}
+                  <div className="flex justify-end pt-4">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-[#2a75bb] hover:bg-[#1e5a91] text-white font-bold py-2.5 px-10 rounded-lg transition-all transform active:scale-95 shadow-md disabled:opacity-50"
+                      className="border-2 border-white text-white font-bold py-2.5 px-12 rounded-lg hover:bg-white hover:text-[#083b4a] transition-all duration-300 active:scale-95 disabled:opacity-30"
                     >
                       {isSubmitting ? "..." : "Sign In"}
                     </button>
@@ -90,34 +116,17 @@ const Login = () => {
               )}
             </Formik>
 
-            <p className="mt-10 text-center text-sm text-[#4a5568]">
-              Don't have an account?{" "}
-              <Link to="/register" className="text-[#2a75bb] hover:underline font-bold">
-                Create one
-              </Link>
-            </p>
+            {/* Footer */}
+            <div className="mt-12 text-center">
+              <p className="text-sm text-white/60">
+                Don't have an account?{" "}
+                <Link to="/register" className="text-white hover:underline font-bold decoration-white/40 underline-offset-4 transition-all">
+                  Create one
+                </Link>
+              </p>
+            </div>
           </div>
         </motion.div>
-      </div>
-
-      {/* Right Side: High-Quality Image with Refined Slanted Divider */}
-      <div 
-        className="hidden md:block md:w-[57%] absolute right-0 top-0 h-full z-10"
-        style={{
-          clipPath: "polygon(25% 0, 100% 0, 100% 100%, 0% 100%)",
-        }}
-      >
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('https://accentra.co.uk/wp-content/uploads/2015/08/accentra-business-software-solutions1.jpg')",
-            // This ensures the image doesn't look "smashed"
-            backgroundSize: 'cover',
-            backgroundPosition: 'right center' 
-          }}
-        />
-        {/* Subtle Gradient Overlay to blend the image into the background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#083b4a]/45 to-transparent" />
       </div>
     </div>
   );
