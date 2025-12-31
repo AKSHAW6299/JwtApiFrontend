@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { WebData } from "../contextApi/AuthContext";
 import { logout } from "../utils/Apis";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ toggleSidebar }) => {
   const { user } = useContext(WebData);
@@ -16,9 +17,14 @@ const Navbar = ({ toggleSidebar }) => {
           ☰
         </button>
 
-        <h1 className="font-semibold text-sm sm:text-base">
-          Dashboard
-        </h1>
+        {/* Logo → Dashboard */}
+        <Link to="/dashboard" className="h-8 flex items-center">
+          <img
+            src="https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/logo-slogan.svg"
+            alt="Accentra"
+            className="h-full w-auto object-contain cursor-pointer"
+          />
+        </Link>
       </div>
 
       {user && (
