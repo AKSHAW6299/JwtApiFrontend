@@ -31,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#083b4a] overflow-hidden relative">
+    <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#083b4a] overflow-hidden relative font-sans">
       
       {/* BACKGROUND IMAGE LAYER */}
       <div 
@@ -43,17 +43,17 @@ const Login = () => {
           clipPath: "polygon(30% 0, 100% 0, 100% 100%, 0% 100%)",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#083b4a] via-[#083b4a]/60 to-transparent z-1" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#083b4a] via-[#083b4a]/70 to-transparent z-1" />
 
       {/* LOGIN CONTENT AREA */}
       <div className="w-full md:w-[50%] flex items-center justify-center p-6 z-10">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="w-full max-w-md overflow-hidden rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md shadow-2xl"
         >
-          {/* Logo Section - Fully Transparent */}
+          {/* Logo Section - Transparent Background */}
           <div className="p-6 flex justify-center border-b border-white/10">
             <img
               src="https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/logo-slogan.svg"
@@ -64,9 +64,9 @@ const Login = () => {
 
           {/* Form Section */}
           <div className="p-8 md:p-10">
-            <div className="mb-10">
+            <div className="mb-8">
               <h2 className="text-3xl font-bold text-white tracking-tight">Welcome Back</h2>
-              <p className="text-white/70 font-medium mt-2">Sign in to your dashboard</p>
+              <p className="text-white/80 font-medium mt-2">Sign in to your dashboard</p>
             </div>
 
             <Formik
@@ -75,52 +75,62 @@ const Login = () => {
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-6">
-                  {/* Email Field */}
-                  <div className="relative">
+                  {/* Email */}
+                  <div className="relative group">
                     <Field
                       name="email"
                       type="email"
                       placeholder="Email .company.com"
-                      className="w-full px-4 py-3.5 rounded-lg border border-white/20 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
+                      className="w-full px-4 py-3.5 rounded-lg border border-white/20 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
                     />
                   </div>
 
-                  {/* Password Field */}
-                  <div className="relative">
+                  {/* Password */}
+                  <div className="relative group">
                     <Field
                       name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
-                      className="w-full px-4 py-3.5 rounded-lg border border-white/20 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
+                      className="w-full px-4 py-3.5 rounded-lg border border-white/20 bg-white/5 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-4 text-xs font-bold text-white/50 hover:text-white transition-colors"
+                      className="absolute right-4 top-4 text-[10px] font-bold tracking-widest text-white/40 hover:text-white transition-colors"
                     >
                       {showPassword ? "HIDE" : "SHOW"}
                     </button>
                   </div>
 
-                  {/* Sign In Button - Transparent Outline Style */}
+                  {/* Submit Button with Spinner */}
                   <div className="flex justify-end pt-4">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="border-2 border-white text-white font-bold py-2.5 px-12 rounded-lg hover:bg-white hover:text-[#083b4a] transition-all duration-300 active:scale-95 disabled:opacity-30"
+                      className="relative min-w-[140px] border-2 border-white text-white font-bold py-2.5 px-8 rounded-lg hover:bg-white hover:text-[#083b4a] transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center overflow-hidden"
                     >
-                      {isSubmitting ? "..." : "Sign In"}
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin h-5 w-5 mr-3 text-current" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          <span>Authenticating...</span>
+                        </>
+                      ) : (
+                        "Sign In"
+                      )}
                     </button>
                   </div>
                 </Form>
               )}
             </Formik>
 
-            {/* Footer */}
-            <div className="mt-12 text-center">
-              <p className="text-sm text-white/60">
+            {/* Register Link */}
+            <div className="mt-12 text-center border-t border-white/10 pt-6">
+              <p className="text-sm text-white/50">
                 Don't have an account?{" "}
-                <Link to="/register" className="text-white hover:underline font-bold decoration-white/40 underline-offset-4 transition-all">
+                <Link to="/register" className="text-white hover:underline font-bold underline-offset-4">
                   Create one
                 </Link>
               </p>
