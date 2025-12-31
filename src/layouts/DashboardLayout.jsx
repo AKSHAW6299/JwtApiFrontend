@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { WebData } from "../contextApi/AuthContext";
@@ -15,20 +16,23 @@ const DashboardLayout = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {/* Navbar */}
       <Navbar toggleSidebar={() => setSidebarOpen(true)} />
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
         <Sidebar
           isOpen={sidebarOpen}
           closeSidebar={() => setSidebarOpen(false)}
         />
 
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto bg-gray-100 p-4 sm:p-6">
+        {/* 🔥 Animated Content */}
+        <motion.main
+          className="flex-1 overflow-y-auto bg-gray-100 p-4 sm:p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
           <Outlet />
-        </main>
+        </motion.main>
       </div>
     </div>
   );
