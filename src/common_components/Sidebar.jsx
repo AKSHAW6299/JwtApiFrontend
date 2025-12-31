@@ -1,50 +1,28 @@
-import React from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { WebData } from "../contextApi/AuthContext";
 
 const Sidebar = ({ isOpen, closeSidebar }) => {
+  const { role } = useContext(WebData);
+
   return (
-    <>
-      {/* MOBILE OVERLAY */}
-      {isOpen && (
-        <div
-          onClick={closeSidebar}
-          className="fixed inset-0 bg-black/40 z-40 md:hidden"
-        />
-      )}
+    <aside className={`bg-gray-800 text-white w-64 p-4`}>
+      <nav className="space-y-2">
 
-      <aside
-        className={`
-          fixed md:sticky
-          top-14
-          h-[calc(100vh-56px)]
-          w-64
-          bg-gray-900 text-white
-          z-50
-          transform transition-transform duration-300
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0
-        `}
-      >
-        <div className="p-4 text-lg font-semibold border-b border-gray-700">
-          Menu
-        </div>
+        <NavLink to="/dashboard">Dashboard</NavLink>
 
-        <nav className="flex flex-col gap-3 p-4">
-          <NavLink to="/dashboard" end className="hover:text-blue-400">
-            Dashboard
-          </NavLink>
-          <NavLink to="/dashboard/services" className="hover:text-blue-400">
-            Services
-          </NavLink>
-          <NavLink to="/dashboard/settings" className="hover:text-blue-400">
-            Settings
-          </NavLink>
-          <NavLink to="/dashboard/faq" className="hover:text-blue-400">
-            FAQ
-          </NavLink>
-        </nav>
-      </aside>
-    </>
+        {(role === "admin" || role === "superadmin") && (
+          <NavLink to="/services">Services</NavLink>
+        )}
+
+        {role === "superadmin" && (
+          <NavLink to="/settings">Settings</NavLink>
+        )}
+
+        <NavLink to="/faq">FAQ</NavLink>
+
+      </nav>
+    </aside>
   );
 };
 

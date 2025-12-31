@@ -1,46 +1,57 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { UserContext } from "./contextApi/AuthContext";
-
-// Public pages
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./auth/Home";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
-
-// Dashboard layout & pages
 import DashboardLayout from "./layouts/DashboardLayout";
-import DashboardHome from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Services from "./pages/Services";
 import Settings from "./pages/Settings";
-import FAQ from "./pages/Faq";
+import Faq from "./pages/Faq";
 
-function App() {
+import ProtectedRoute from "./auth/ProtectedRoute";
+import RoleRoute from "./auth/RoleRoute";
+
+const App = () => {
   return (
-    <UserContext>
-      <BrowserRouter>
-        <Routes>
+    <BrowserRouter>
+      <Routes>
+        {/* Public */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<SignUp />} />
 
-          {/* Default redirect */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Protected */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
 
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<SignUp />} />
+            {/* ADMIN + SUPERADMIN */}
+            <Route
+              path="/services"
+              element={
+                <RoleRoute allowedRoles={["admin", "superadmin"]}>
+                  <Services />
+                </RoleRoute>
+              }
+            />
 
-          {/* Protected Dashboard Routes */}
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<DashboardHome />} />
-            <Route path="services" element={<Services />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="faq" element={<FAQ />} />
+            {/* SUPERADMIN ONLY */}
+            <Route
+              path="/settings"
+              element={
+                <RoleRoute allowedRoles={["superadmin"]}>
+                  <Settings />
+                </RoleRoute>
+              }
+            />
+
+            {/* ALL ROLES */}
+            <Route path="/faq" element={<Faq />} />
           </Route>
-
-          {/* 404 fallback */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
-
-        </Routes>
-      </BrowserRouter>
-    </UserContext>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

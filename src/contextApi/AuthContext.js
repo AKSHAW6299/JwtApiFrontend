@@ -8,12 +8,26 @@ export const UserContext = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
     setLoading(false);
   }, []);
 
+  const logoutUser = () => {
+    localStorage.clear();
+    setUser(null);
+  };
+
   return (
-    <WebData.Provider value={{ user, setUser }}>
+    <WebData.Provider
+      value={{
+        user,
+        setUser,
+        role: user?.role,   // 🔑 role exposed
+        logoutUser,
+      }}
+    >
       {!loading && children}
     </WebData.Provider>
   );
