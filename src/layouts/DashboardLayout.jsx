@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { WebData } from "../contextApi/AuthContext";
-import { useNavigate, Outlet } from "react-router-dom";
 import Navbar from "../common_components/Navbar";
 import Sidebar from "../common_components/Sidebar";
 
@@ -14,21 +14,19 @@ const DashboardLayout = () => {
   }, [user, navigate]);
 
   return (
-    // 🔑 FULL VIEWPORT
-    <div className="h-screen flex flex-col">
-      {/* 🔒 STICKY NAVBAR */}
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Navbar */}
       <Navbar toggleSidebar={() => setSidebarOpen(true)} />
 
-      {/* 🔑 FLEX AREA (NO BODY SCROLL) */}
       <div className="flex flex-1 overflow-hidden">
-        {/* 🔒 STICKY SIDEBAR */}
+        {/* Sidebar */}
         <Sidebar
           isOpen={sidebarOpen}
           closeSidebar={() => setSidebarOpen(false)}
         />
 
-        {/* ✅ ONLY CONTENT SCROLLS */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-100">
+        {/* Content */}
+        <main className="flex-1 overflow-y-auto bg-gray-100 p-4 sm:p-6">
           <Outlet />
         </main>
       </div>

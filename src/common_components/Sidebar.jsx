@@ -10,29 +10,48 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
      ${isActive ? "bg-gray-700 text-white" : "text-gray-300 hover:bg-gray-700"}`;
 
   return (
-    <aside className="bg-gray-800 text-white w-64 h-full">
-      <nav className="flex flex-col gap-2 p-4">
-        <NavLink to="/dashboard" className={linkClass}>
-          Dashboard
-        </NavLink>
+    <>
+      {/* Overlay (mobile only) */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={closeSidebar}
+        />
+      )}
 
-        {(role === "admin" || role === "superadmin") && (
-          <NavLink to="/services" className={linkClass}>
-            Services
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed md:static z-50
+          h-full w-64 bg-gray-800
+          transform transition-transform duration-300
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}
+      >
+        <nav className="flex flex-col gap-2 p-4 mt-14 md:mt-0">
+          <NavLink to="/dashboard" className={linkClass} onClick={closeSidebar}>
+            Dashboard
           </NavLink>
-        )}
 
-        {role === "superadmin" && (
-          <NavLink to="/settings" className={linkClass}>
-            Settings
+          {(role === "admin" || role === "superadmin") && (
+            <NavLink to="/services" className={linkClass} onClick={closeSidebar}>
+              Services
+            </NavLink>
+          )}
+
+          {role === "superadmin" && (
+            <NavLink to="/settings" className={linkClass} onClick={closeSidebar}>
+              Settings
+            </NavLink>
+          )}
+
+          <NavLink to="/faq" className={linkClass} onClick={closeSidebar}>
+            FAQ
           </NavLink>
-        )}
-
-        <NavLink to="/faq" className={linkClass}>
-          FAQ
-        </NavLink>
-      </nav>
-    </aside>
+        </nav>
+      </aside>
+    </>
   );
 };
 
