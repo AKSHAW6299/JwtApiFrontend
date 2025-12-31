@@ -8,19 +8,28 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
       {isOpen && (
         <div
           onClick={closeSidebar}
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
         />
       )}
 
       <aside
-        className={`fixed md:static top-0 left-0 h-full w-64 bg-gray-800 text-white z-50
+        className={`
+          fixed md:static
+          top-14 md:top-0
+          h-[calc(100vh-56px)] md:h-auto
+          w-64
+          bg-gray-900 text-white
+          z-50
           transform transition-transform duration-300
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0`}
+          md:translate-x-0
+        `}
       >
-        <div className="p-4 font-bold text-lg">Menu</div>
+        <div className="p-4 text-lg font-semibold border-b border-gray-700">
+          Menu
+        </div>
 
-        <nav className="flex flex-col p-4 gap-3">
+        <nav className="flex flex-col gap-3 p-4">
           <NavLink to="/dashboard" end className="hover:text-blue-400">
             Dashboard
           </NavLink>
