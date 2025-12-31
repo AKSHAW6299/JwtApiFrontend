@@ -30,20 +30,32 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-4">
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{
+        backgroundImage:
+          "url('https://accentra.co.uk/wp-content/uploads/2015/08/accentra-business-software-solutions1.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 bg-black/50"></div>
+
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="w-full max-w-md"
+        className="relative w-full max-w-md z-10"
       >
-        <div className="bg-white rounded-xl shadow-2xl p-8">
+        <div className="bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-2xl p-8">
           {/* Header */}
           <div className="mb-6 text-center">
             <h2 className="text-2xl font-semibold text-gray-800">
               Welcome Back
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-600 mt-1">
               Sign in to your dashboard
             </p>
           </div>
@@ -56,7 +68,7 @@ const Login = () => {
               <Form className="space-y-4">
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Email
                   </label>
                   <Field
@@ -71,7 +83,7 @@ const Login = () => {
 
                 {/* Password */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Password
                   </label>
                   <Field
@@ -102,7 +114,7 @@ const Login = () => {
           </Formik>
 
           {/* Footer */}
-          <p className="text-center mt-6 text-sm text-gray-600">
+          <p className="text-center mt-6 text-sm text-gray-700">
             Don’t have an account?{" "}
             <Link
               to="/register"
