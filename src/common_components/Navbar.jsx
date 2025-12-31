@@ -6,28 +6,31 @@ const Navbar = ({ toggleSidebar }) => {
   const { user } = useContext(WebData);
 
   return (
-    <div className="h-14 bg-gray-900 text-white flex items-center justify-between px-4">
-      <div className="flex items-center">
-        <button onClick={toggleSidebar} className="mr-4 text-xl">
+    <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-4">
+      <div className="flex items-center gap-3">
+        {/* MOBILE TOGGLE */}
+        <button
+          onClick={toggleSidebar}
+          className="md:hidden text-2xl"
+        >
           ☰
         </button>
-        <h1 className="text-lg font-semibold">My Dashboard</h1>
+
+        <h1 className="font-semibold">Dashboard</h1>
       </div>
 
-      {/* Show only after login */}
       {user && (
-        <div className="flex items-center gap-4">
-          <span className="text-sm">{user.name}</span>
-
+        <div className="flex items-center gap-3">
+          <span className="hidden sm:block text-sm">{user.name}</span>
           <button
             onClick={logout}
-            className="px-3 py-1 bg-red-600 rounded hover:bg-red-700"
+            className="bg-red-600 px-3 py-1 rounded text-sm"
           >
             Logout
           </button>
         </div>
       )}
-    </div>
+    </header>
   );
 };
 

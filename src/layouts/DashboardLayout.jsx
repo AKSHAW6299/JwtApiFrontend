@@ -1,27 +1,29 @@
 import React, { useContext, useEffect, useState } from "react";
 import { WebData } from "../contextApi/AuthContext";
 import { useNavigate, Outlet } from "react-router-dom";
-import Sidebar from "../common_components/Sidebar";
 import Navbar from "../common_components/Navbar";
+import Sidebar from "../common_components/Sidebar";
 
 const DashboardLayout = () => {
   const { user } = useContext(WebData);
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!user) navigate("/login");
   }, [user]);
 
   return (
-    <div className="h-screen flex flex-col">
-      <Navbar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+    <div className="min-h-screen flex flex-col">
+      <Navbar toggleSidebar={() => setSidebarOpen(true)} />
 
       <div className="flex flex-1">
-        <Sidebar isOpen={sidebarOpen} />
+        <Sidebar
+          isOpen={sidebarOpen}
+          closeSidebar={() => setSidebarOpen(false)}
+        />
 
-        {/* 👇 THIS IS REQUIRED */}
-        <main className="flex-1 p-6 bg-gray-100 overflow-auto">
+        <main className="flex-1 p-4 md:p-6 bg-gray-100">
           <Outlet />
         </main>
       </div>
