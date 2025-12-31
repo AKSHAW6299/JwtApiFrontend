@@ -1,13 +1,13 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./views/Home";
-import Login from "./views/Login";
+import Home from "../src/auth/Home";
 import SignUp from "./views/SignUp";
-import Dashboard from "../src/components/Dashboard";
-import Services from "../src/components/Services";
-import Settings from "../src/components/Settings";
-import FAQ from "../src/components/Faq";
+import DashboardLayout from "./layouts/DashboardLayout";
+import Services from "./views/Services";
+import Settings from "./views/Settings";
+import FAQ from "./views/Faq";
 import { UserContext } from "./contextApi/AuthContext";
+import Dashboard from "./views/Dashboard";
+import Login from "./auth/Login";
 
 function App() {
   return (
@@ -18,9 +18,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SignUp />} />
 
-          {/* Dashboard nested routes */}
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<div>Dashboard Home Content</div>} />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
             <Route path="services" element={<Services />} />
             <Route path="settings" element={<Settings />} />
             <Route path="faq" element={<FAQ />} />
