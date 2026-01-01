@@ -34,6 +34,7 @@ const roleData = [
 
 const DashboardHome = () => {
   const { user } = useContext(WebData);
+console.log(user);
 
   return (
     <motion.div
@@ -46,7 +47,7 @@ const DashboardHome = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
           <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-            Welcome back, {user?.name || "Admin"}
+            Welcome back, {user?.name || "user"}
           </h2>
           <p className="text-slate-500 font-medium">
             System overview for <span className="text-blue-600">Jan 2026</span>
