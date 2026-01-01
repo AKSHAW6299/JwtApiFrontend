@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { WebData } from "../contextApi/AuthContext";
 import { 
   FiEdit2, 
@@ -22,7 +22,7 @@ const initialUsers = [
 ];
 
 const UserManagement = () => {
-  const { user } = useContext(WebData);
+  // const { user } = useContext(WebData);
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
