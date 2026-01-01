@@ -60,10 +60,10 @@ const DashboardHome = () => {
       {/* Stats Cards - Modern Borderless Glass Look */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {[
-          { label: "Total Users", value: "1,245", trend: "+12%", color: "text-blue-600" },
-          { label: "Active Errors", value: "3", trend: "-2%", color: "text-rose-600" },
-          { label: "Live Sessions", value: "312", trend: "+5%", color: "text-emerald-600" },
-          { label: "Gross Revenue", value: "$9,430", trend: "+18%", color: "text-amber-600" },
+          { label: "Total Users", value: "11,245", trend: "+12%", color: "text-blue-600" },
+          { label: "Active Errors", value: "113", trend: "-2%", color: "text-rose-600" },
+          { label: "Live Sessions", value: "1312", trend: "+5%", color: "text-emerald-600" },
+          { label: "Gross Revenue", value: "$111,439", trend: "+68%", color: "text-amber-600" },
         ].map((item, i) => (
           <motion.div
             key={item.label}
