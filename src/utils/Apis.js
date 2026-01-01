@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://jwtapi1111.onrender.com/api" || "http://localhost:5000/api",
+  baseURL: "https://jwtapi1111.onrender.com/api" || "http://localhost:3000/api",
   withCredentials: true, // refresh token in cookie
 });
 
