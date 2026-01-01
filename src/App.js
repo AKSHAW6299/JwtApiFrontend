@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Services from "./pages/Services";
 import Settings from "./pages/Settings";
 import Faq from "./pages/Faq";
-
+import EmployeeListing from "./pages/EmployeeListing";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import RoleRoute from "./auth/RoleRoute";
 
@@ -47,6 +47,7 @@ const App = () => {
 
             {/* ALL ROLES */}
             <Route path="/faq" element={<Faq />} />
+            <Route path="/employee-listing" element={<EmployeeListing />} />
           </Route>
         </Route>
       </Routes>

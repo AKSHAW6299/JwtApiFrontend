@@ -46,6 +46,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             </NavLink>
           )}
 
+           <NavLink to="/employee-listing" className={linkClass} onClick={closeSidebar}>
+            Employee Listing
+          </NavLink>
+
           {role === "superadmin" && (
             <NavLink to="/settings" className={linkClass} onClick={closeSidebar}>
               Settings
