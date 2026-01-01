@@ -1,266 +1,145 @@
 import React, { useEffect, useState } from "react";
-
-// Modal component for View/Edit user
-const UserModal = ({ user, onClose, onSave, isEdit }) => {
-    const [formData, setFormData] = useState(user || {});
-
-    useEffect(() => {
-        setFormData(user || {});
-    }, [user]);
-
-    if (!user) return null;
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSave = () => {
-        onSave(formData);
-    };
-
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg max-w-lg w-full">
-                <h2 className="text-xl font-bold mb-4">{isEdit ? "Edit User" : "View User"}</h2>
-                <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                    <div className="flex items-center space-x-2">
-                        <img src={user.image} alt={user.firstName} className="w-12 h-12 rounded-full" />
-                        <span>{user.firstName} {user.lastName}</span>
-                    </div>
-                    <div>
-                        <label className="font-semibold">Email:</label>
-                        {isEdit ? (
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="border px-2 py-1 rounded w-full"
-                            />
-                        ) : (
-                            <p>{user.email}</p>
-                        )}
-                    </div>
-                    <div>
-                        <label className="font-semibold">Phone:</label>
-                        {isEdit ? (
-                            <input
-                                type="text"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                className="border px-2 py-1 rounded w-full"
-                            />
-                        ) : (
-                            <p>{user.phone}</p>
-                        )}
-                    </div>
-                    <div>
-                        <label className="font-semibold">Role:</label>
-                        {isEdit ? (
-                            <input
-                                type="text"
-                                name="role"
-                                value={formData.role || ""}
-                                onChange={handleChange}
-                                className="border px-2 py-1 rounded w-full"
-                            />
-                        ) : (
-                            <p>{user.role || "N/A"}</p>
-                        )}
-                    </div>
-                    <div>
-                        <label className="font-semibold">Address:</label>
-                        <p>{user.address?.address}, {user.address?.city}, {user.address?.state}</p>
-                    </div>
-                </div>
-
-                <div className="flex justify-end mt-4 space-x-2">
-                    <button onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">Close</button>
-                    {isEdit && (
-                        <button
-                            onClick={handleSave}
-                            className="px-4 py-2 bg-blue-500 text-white rounded"
-                        >
-                            Save
-                        </button>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-};
+import UserModal from "../common_components/UserModel";
 
 const Settings = () => {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchEmail, setSearchEmail] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 8;
 
-    const [searchEmail, setSearchEmail] = useState("");
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [isEdit, setIsEdit] = useState(false);
+  useEffect(() => {
+    fetch("https://dummyjson.com/users")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data.users);
+        setLoading(false);
+      });
+  }, []);
 
-    // Pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const usersPerPage = 10;
+  const filteredUsers = users.filter((u) => u.email.toLowerCase().includes(searchEmail.toLowerCase()));
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+  const currentUsers = filteredUsers.slice((currentPage - 1) * usersPerPage, currentPage * usersPerPage);
 
-    // Fetch users
-    useEffect(() => {
-        fetch("https://dummyjson.com/users")
-            .then((res) => res.json())
-            .then((data) => {
-                setUsers(data.users);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, []);
+  const handleSave = (updatedUser) => {
+    // API Simulation
+    setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+    setSelectedUser(null);
+  };
 
-    // Filtered users based on search
-    const filteredUsers = users.filter((user) =>
-        user.email.toLowerCase().includes(searchEmail.toLowerCase())
-    );
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
 
-    // Pagination calculations
-    const indexOfLastUser = currentPage * usersPerPage;
-    const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-
-    // Delete user
-    const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this user?")) {
-            setUsers(users.filter((u) => u.id !== id));
-        }
-    };
-
-    // Save edited user (PUT API simulation)
-    const handleSave = (updatedUser) => {
-        // PUT request simulation
-        fetch(`https://dummyjson.com/users/${updatedUser.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedUser),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setUsers(users.map((u) => (u.id === data.id ? data : u)));
-                setSelectedUser(null);
-            })
-            .catch((err) => console.error(err));
-    };
-
-    if (loading) return <p>Loading users...</p>;
-    if (error) return <p>Error: {error}</p>;
-
-    return (
-        <div className="max-w-7xl mx-auto px-4 py-6">
-            <h1 className="text-2xl font-bold mb-4">Admin Settings</h1>
-
-            {/* Search */}
+  return (
+    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <div>
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">User Management</h1>
+            <p className="text-slate-500 mt-1">Manage system users and their permissions.</p>
+          </div>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </span>
             <input
-                type="text"
-                placeholder="Search by email..."
-                value={searchEmail}
-                onChange={(e) => {
-                    setSearchEmail(e.target.value);
-                    setCurrentPage(1); // reset page on search
-                }}
-                className="border px-3 py-2 rounded mb-4 w-full md:w-1/3"
+              type="text"
+              placeholder="Filter by email..."
+              className="pl-10 pr-4 py-2.5 w-full md:w-80 bg-white border-0 shadow-sm ring-1 ring-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+              onChange={(e) => { setSearchEmail(e.target.value); setCurrentPage(1); }}
             />
-
-            {/* Users Table */}
-            <table className="w-full border-collapse border">
-                <thead>
-                    <tr className="bg-gray-200">
-                        <th className="border px-2 py-1">ID</th>
-                        <th className="border px-2 py-1">Image</th>
-                        <th className="border px-2 py-1">Name</th>
-                        <th className="border px-2 py-1">Email</th>
-                        <th className="border px-2 py-1">Phone</th>
-                        <th className="border px-2 py-1">Role</th>
-                        <th className="border px-2 py-1">Address</th>
-                        <th className="border px-2 py-1">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentUsers.map((user) => (
-                        <tr key={user.id}>
-                            <td className="border px-2 py-1">{user.id}</td>
-                            <td className="border px-2 py-1">
-                                <img src={user.image} alt={user.firstName} className="w-10 h-10 rounded-full" />
-                            </td>
-                            <td className="border px-2 py-1">{user.firstName} {user.lastName}</td>
-                            <td className="border px-2 py-1">{user.email}</td>
-                            <td className="border px-2 py-1">{user.phone}</td>
-                            <td className="border px-2 py-1">{user.role || "N/A"}</td>
-                            <td className="border px-2 py-1">{user.address?.city}, {user.address?.state}</td>
-                            <td className="border px-2 py-1 space-x-2">
-                                <button
-                                    onClick={() => { setSelectedUser(user); setIsEdit(false); }}
-                                    className="bg-blue-500 text-white px-2 py-1 rounded"
-                                >
-                                    View
-                                </button>
-                                <button
-                                    onClick={() => { setSelectedUser(user); setIsEdit(true); }}
-                                    className="bg-green-500 text-white px-2 py-1 rounded"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(user.id)}
-                                    className="bg-red-500 text-white px-2 py-1 rounded"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            {/* Pagination */}
-            <div className="flex justify-center space-x-2 mt-4">
-                <button
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-3 py-1 border rounded disabled:opacity-50"
-                >
-                    Prev
-                </button>
-                {[...Array(totalPages)].map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setCurrentPage(i + 1)}
-                        className={`px-3 py-1 border rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : ""}`}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
-                <button
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-1 border rounded disabled:opacity-50"
-                >
-                    Next
-                </button>
-            </div>
-
-            {/* Modal */}
-            {selectedUser && (
-                <UserModal
-                    user={selectedUser}
-                    onClose={() => setSelectedUser(null)}
-                    onSave={handleSave}
-                    isEdit={isEdit}
-                />
-            )}
+          </div>
         </div>
-    );
+
+        {/* Table Card */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">User</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Role</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Location</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {currentUsers.map((user) => (
+                  <tr key={user.id} className="hover:bg-slate-50/50 transition-colors group">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <img className="h-10 w-10 rounded-full border-2 border-white shadow-sm" src={user.image} alt="" />
+                        <div className="ml-4">
+                          <div className="text-sm font-bold text-slate-900">{user.firstName} {user.lastName}</div>
+                          <div className="text-sm text-slate-500">{user.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                        {user.role || "Member"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-600">
+                      {user.address.city}
+                    </td>
+                    <td className="px-6 py-4 text-right space-x-2">
+                      <button 
+                        onClick={() => { setSelectedUser(user); setIsEdit(false); }}
+                        className="text-slate-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-all"
+                      >
+                        View
+                      </button>
+                      <button 
+                        onClick={() => { setSelectedUser(user); setIsEdit(true); }}
+                        className="text-slate-400 hover:text-green-600 p-2 rounded-lg hover:bg-green-50 transition-all"
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+            <span className="text-sm text-slate-500">Page {currentPage} of {totalPages}</span>
+            <div className="flex space-x-2">
+              <button 
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(p => p - 1)}
+                className="px-4 py-2 text-sm bg-white border border-slate-200 rounded-lg disabled:opacity-50 hover:bg-slate-50 transition-colors shadow-sm"
+              >
+                Previous
+              </button>
+              <button 
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(p => p + 1)}
+                className="px-4 py-2 text-sm bg-white border border-slate-200 rounded-lg disabled:opacity-50 hover:bg-slate-50 transition-colors shadow-sm"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <UserModal
+        user={selectedUser}
+        onClose={() => setSelectedUser(null)}
+        onSave={handleSave}
+        isEdit={isEdit}
+      />
+    </div>
+  );
 };
 
 export default Settings;
