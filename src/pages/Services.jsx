@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const products = [
+
+
   {
-    name: "Primo PSC",
-    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primopsc.svg",
-    tagline: "Personal Services Company solution for accountants",
+    name: "Primo Books",
+    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primobooks.svg",
+    tagline: "A modern suite of financial ledgers",
     description:
-      "A simple, elegant PSC platform powered by enterprise-grade payroll and financial engines.",
-    benefits: [
-      "Accountant-focused design",
-      "Enterprise-ready core",
-      "Compliance driven",
-    ],
-    link: "https://accentra.co.uk/products/personal-service-company-software/",
+      "An online accounting and invoicing suite built on decades of financial and technology expertise.",
+    benefits: ["Flexible accounting", "Powerful invoicing", "Modern UI"],
+    link: "https://accentra.co.uk/products/accounting-and-invoicing-software/",
   },
+
   {
     name: "Primo Payroll",
     logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primopayroll.svg",
@@ -28,28 +27,7 @@ const products = [
     ],
     link: "https://primopayroll.co.uk/pricing",
   },
-  {
-    name: "Solus PSC",
-    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/soluspsc.svg",
-    tagline: "A Personal Services Company platform with a different perspective",
-    description:
-      "An intelligent platform enabling Umbrella Companies to switch to PSC models without compromising compliance or control.",
-    benefits: [
-      "Powerful accountant interface",
-      "Run thousands of PSCs with small teams",
-      "Integrated contractor messaging",
-    ],
-    link: "https://soluspsc.co.uk/pricing",
-  },
-  {
-    name: "Primo Books",
-    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primobooks.svg",
-    tagline: "A modern suite of financial ledgers",
-    description:
-      "An online accounting and invoicing suite built on decades of financial and technology expertise.",
-    benefits: ["Flexible accounting", "Powerful invoicing", "Modern UI"],
-    link: "https://accentra.co.uk/products/accounting-and-invoicing-software/",
-  },
+
   {
     name: "Primo Business",
     logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primobusiness.svg",
@@ -63,19 +41,21 @@ const products = [
     ],
     link: "https://accentra.co.uk/products/business-software/",
   },
+
   {
-    name: "Primo Time",
-    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primotime.svg",
-    tagline: "Secure online Pay & Bill solution for recruitment businesses",
+    name: "Primo PSC",
+    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primopsc.svg",
+    tagline: "Personal Services Company solution for accountants",
     description:
-      "A workflow-driven solution ensuring contractors are paid and clients billed accurately every week.",
+      "A simple, elegant PSC platform powered by enterprise-grade payroll and financial engines.",
     benefits: [
-      "Timesheet & PAYE modules",
-      "Candidate & client portals",
-      "Front-office integrations",
+      "Accountant-focused design",
+      "Enterprise-ready core",
+      "Compliance driven",
     ],
-    link: "https://primotime.co.uk/",
+    link: "https://accentra.co.uk/products/personal-service-company-software/",
   },
+
   {
     name: "Primo Umbrella",
     logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primoumbrella.svg",
@@ -89,6 +69,35 @@ const products = [
     ],
     link: "https://primoumbrella.co.uk/pricing/",
   },
+
+  {
+    name: "Primo Time",
+    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/primotime.svg",
+    tagline: "Secure online Pay & Bill solution for recruitment businesses",
+    description:
+      "A workflow-driven solution ensuring contractors are paid and clients billed accurately every week.",
+    benefits: [
+      "Timesheet & PAYE modules",
+      "Candidate & client portals",
+      "Front-office integrations",
+    ],
+    link: "https://primotime.co.uk/",
+  },
+
+  {
+    name: "Solus PSC",
+    logo: "https://accentra.co.uk/wp-content/themes/accentra-2015/accentra/assets/img/logos/soluspsc.svg",
+    tagline: "A Personal Services Company platform with a different perspective",
+    description:
+      "An intelligent platform enabling Umbrella Companies to switch to PSC models without compromising compliance or control.",
+    benefits: [
+      "Powerful accountant interface",
+      "Run thousands of PSCs with small teams",
+      "Integrated contractor messaging",
+    ],
+    link: "https://soluspsc.co.uk/pricing",
+  },
+
 ];
 
 const Services = () => {
@@ -156,9 +165,8 @@ const Services = () => {
               >
                 Business Benefits
                 <span
-                  className={`transition-transform duration-300 ${
-                    expandedIndex === index ? "rotate-180" : ""
-                  }`}
+                  className={`transition-transform duration-300 ${expandedIndex === index ? "rotate-180" : ""
+                    }`}
                 >
                   ▼
                 </span>
