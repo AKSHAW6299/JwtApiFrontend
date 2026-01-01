@@ -14,7 +14,7 @@ import {
 
 // --- Sample Data ---
 const initialUsers = [
-  { id: 1, name: "Arjun Mehta", email: "arjun@accentra.io", role: "Manager", status: "Active", initial: "A", color: "bg-indigo-100 text-indigo-600" },
+  { id: 1, name: "Arjun Singh", email: "arjun@accentra.io", role: "Manager", status: "Active", initial: "A", color: "bg-indigo-100 text-indigo-600" },
   { id: 2, name: "Sana Khan", email: "sana@accentra.io", role: "Developer", status: "Active", initial: "S", color: "bg-emerald-100 text-emerald-600" },
   { id: 3, name: "Leo Das", email: "leo@accentra.io", role: "Editor", status: "Inactive", initial: "L", color: "bg-amber-100 text-amber-600" },
   { id: 4, name: "Mina Sun", email: "mina@accentra.io", role: "Admin", status: "Active", initial: "M", color: "bg-rose-100 text-rose-600" },
